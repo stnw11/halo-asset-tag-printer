@@ -1,0 +1,51 @@
+# Label layout tuning. Margins are symmetric by default, which centers
+# logo/text/QR vertically on the label -- re-tune for your own printer if
+# it has a real leading-edge calibration offset (see the comment on
+# top_margin_in/bottom_margin_in in src/zpl_template.py); don't assume
+# these values transfer to different stock or a different printer.
+layout:
+  outer_margin_in: 0.08      # blank margin at the label's left/right edges
+  element_gap_in: 0.04       # blank gap between logo/text/QR
+  # NOTE: on 0.5"-tall stock there is very little vertical slack to give.
+  # A QR version-2 symbol (17+ char tag values) needs a 125-dot working
+  # zone just to clear the minimum legible module size at 300 dpi -- these
+  # margins are already close to that ceiling. Increasing top/bottom
+  # further for extra feed-drift buffer pushes v2-length tags below the
+  # legible floor and raises LayoutError; add drift buffer via
+  # outer_margin_in instead, which doesn't compete with QR sizing.
+  top_margin_in: 0.04
+  bottom_margin_in: 0.04
+  logo_target_min_in: 0.40   # logo's target square footprint -- clamped
+  logo_target_max_in: 0.45   # down by the vertical margins above it
+
+  # Font size is FIXED, designed around this many characters -- not scaled
+  # per-tag to the actual value's length. A live print with a 3-character
+  # real tag ("150") showed why: scaling to actual length made a short tag
+  # compute a much larger font than a long one, and for a short-enough
+  # value the font filled the entire vertical zone with zero centering
+  # slack, which pushed text physically off the label once combined with
+  # text_baseline_offset_ratio below. Set this to your longest realistic
+  # tag value; anything longer raises LayoutError rather than silently
+  # shrinking the font or letting ZPL truncate it.
+  text_target_char_count: 9
+
+  # Positive shifts the human-readable text down, as a fraction of the
+  # rendered font height (scales with the fixed font size above, not a
+  # fixed dot count). ZPL's ^A0 height reserves descender space all-caps/
+  # digit text never uses, so the visible glyph sits high in its box --
+  # needs a live print to tune correctly, there's no way to compute it
+  # from config alone.
+  text_baseline_offset_ratio: 0.0
+
+  # QR sizing (see the README's asset-tag naming-convention constraints)
+  qr_error_correction: "Q"   # H/Q/M/L. Quartile (Q, ~25% recoverable) is the
+                              # default since these tags live on handled
+                              # hardware; it costs QR capacity (v1: 16
+                              # alphanumeric chars at Q vs 20 at M) -- lower
+                              # to "M" if your tag convention runs long.
+  min_qr_module_size_mm: 0.4  # phone cameras get unreliable below this at
+                              # normal handling distance.
+
+  min_text_font_dots_at_300dpi: 24   # ~0.08in / ~5.75pt; scales with DPI.
+                              # Below this, rendering raises a clear error
+                              # instead of printing an illegible tag.

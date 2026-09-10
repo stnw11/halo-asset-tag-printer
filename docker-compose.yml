@@ -1,0 +1,14 @@
+# Image/service names stay lowercase-kebab; the repo is Halo-Asset-Tag-Printer.
+services:
+  halo-asset-tag-printer:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./config:/app/config:ro
+      - ./assets:/app/assets:ro
+    healthcheck:
+      # main.py touches /tmp/heartbeat each poll; unhealthy if stale for
+      # > 3 poll intervals (45s at the default 15s -- keep in sync)
+      test: ["CMD", "python", "-c", "import os,sys,time; sys.exit(0 if time.time()-os.path.getmtime('/tmp/heartbeat')<45 else 1)"]
+      interval: 30s

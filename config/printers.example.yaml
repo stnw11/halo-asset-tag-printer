@@ -1,0 +1,20 @@
+# Copy this file to config/printers.yaml (gitignored) and fill in your
+# printer's real values. The service refuses to start if `ip` is still the
+# example address below -- that's deliberate, see the README.
+printers:
+  default:
+    name: "Asset tag printer"
+    ip: "192.0.2.10"           # RFC 5737 documentation address -- replace with your printer's real LAN IP
+    port: 9100                 # Brady/Zebra raw-IP / JetDirect-style port
+    dpi: 300                    # read this off YOUR printer's status/config label
+    label_width_in: 0.5         # your die-cut stock's dimensions
+    label_height_in: 2.0
+    media_sensing: "gap"        # gap (^MNY) or mark (^MNM) -- check your stock
+    media_type: "thermal_transfer"   # thermal_transfer (^MTT) for ribbon,
+                                      # direct_thermal (^MTD) for DT stock
+    darkness: 15                # ZPL ^MD range 0-30 -- start low, work up
+    print_speed: 2               # inches/sec, ZPL ^PR -- start slow, work up
+    connect_timeout_seconds: 5
+    retries: 3
+  # add more printers here later if this ever needs to route to more than
+  # one -- v1 only ever uses "default".

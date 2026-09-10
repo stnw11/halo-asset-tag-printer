@@ -1,0 +1,15 @@
+# Dotted paths walk nested objects in the Halo asset JSON. A "cf:" prefix
+# looks up a custom field BY NAME in the asset's custom-field array (Halo
+# returns custom fields as a list of {name, value} objects, not flat keys).
+# A missing/null value resolves to an empty string.
+fields:
+  asset_tag: "inventory_number"   # PLACEHOLDER -- confirm which field holds
+                                   # your tag number: inventory_number, an
+                                   # asset-tag custom field, or the asset id.
+                                   # This value becomes BOTH the QR payload
+                                   # and the printed human-readable text --
+                                   # see the README's naming-convention
+                                   # constraints (QR capacity at your chosen
+                                   # length).
+# The print-qty field is read via HALO_ASSET_TAG_QTY_FIELD_NAME / _ID (.env)
+# and is not remappable here -- see .env.example.

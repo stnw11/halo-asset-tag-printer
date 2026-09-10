@@ -1,0 +1,12 @@
+.git
+.venv
+venv
+__pycache__
+*.pyc
+.pytest_cache
+tests/
+output.zpl
+halo-asset-tag-print-spec.md
+.env
+config/*.yaml
+!config/*.example.yaml

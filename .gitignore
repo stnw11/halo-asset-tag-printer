@@ -1,0 +1,25 @@
+# Secrets and operational settings -- see .env.example for the template
+.env
+
+# Live deployment config -- see config/*.example.yaml for the templates
+config/*.yaml
+!config/*.example.yaml
+
+# Real logo -- the neutral placeholder is the only asset committed
+assets/*
+!assets/placeholder_logo.png
+
+# The working spec contains live deployment values (Appendix A) and must
+# never be committed -- see the project's hard requirement on this.
+halo-asset-tag-print-spec.md
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# Local scratch
+output.zpl
+.DS_Store
